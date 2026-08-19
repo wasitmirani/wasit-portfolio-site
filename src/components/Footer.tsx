@@ -11,19 +11,24 @@ const links = [
 
 export function Footer() {
   return (
-    <footer className="py-8 border-t border-border">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-2.5">
-          <div className="w-6 h-6 rounded bg-accent text-white flex items-center justify-center text-[10px] font-bold">W</div>
-          <span className="text-sm text-muted">&copy; {new Date().getFullYear()} {siteConfig.name}</span>
-        </div>
-        <div className="flex items-center gap-0.5">
-          {links.map((l) => (
-            <a key={l.label} href={l.href} target={l.href.startsWith("mailto") ? undefined : "_blank"} rel={l.href.startsWith("mailto") ? undefined : "noopener noreferrer"} aria-label={l.label}
-              className="p-2 text-muted hover:text-foreground transition-colors">
-              <l.icon className="w-4 h-4" />
-            </a>
-          ))}
+    <footer className="py-10 border-t border-border">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-accent to-violet-600 text-white flex items-center justify-center text-[11px] font-bold shadow-md shadow-accent/20">W</div>
+            <div>
+              <span className="text-sm font-semibold text-foreground">{siteConfig.name}</span>
+              <span className="text-[12px] text-muted ml-2">&copy; {new Date().getFullYear()}</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-1">
+            {links.map((l) => (
+              <a key={l.label} href={l.href} target={l.href.startsWith("mailto") ? undefined : "_blank"} rel={l.href.startsWith("mailto") ? undefined : "noopener noreferrer"} aria-label={l.label}
+                className="p-2.5 text-muted hover:text-foreground hover:bg-card rounded-lg transition-all">
+                <l.icon className="w-4 h-4" />
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </footer>

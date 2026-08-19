@@ -16,23 +16,30 @@ const serviceIcons = [
 
 export function Services() {
   return (
-    <section id="services" className="py-24 bg-card border-t border-border">
+    <section id="services" className="py-28 bg-card/50 border-t border-border">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal>
-          <h2 className="text-xl font-bold text-foreground mb-2">Services</h2>
-          <div className="w-10 h-0.5 bg-accent rounded-full mb-12" />
+          <div className="text-center mb-16">
+            <span className="inline-block px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-accent bg-accent/10 rounded-full mb-4">
+              Services
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">What I Offer</h2>
+            <p className="text-muted text-[15px] max-w-md mx-auto">
+              End-to-end development services for startups and enterprises.
+            </p>
+          </div>
         </ScrollReveal>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {services.map((service, i) => {
             const Icon = serviceIcons[i] ?? Globe;
             return (
-              <ScrollReveal key={service} delay={i * 25}>
-                <div className="group flex items-center gap-3 p-4 rounded-xl bg-background border border-border hover:border-accent/40 transition-colors">
-                  <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
+              <ScrollReveal key={service} delay={i * 30}>
+                <div className="group flex items-center gap-3.5 p-4 rounded-xl bg-background border border-border hover:border-accent/40 hover:shadow-md hover:shadow-accent/5 transition-all duration-200">
+                  <div className="w-9 h-9 rounded-lg bg-accent/10 flex items-center justify-center shrink-0 ring-1 ring-accent/10 group-hover:ring-accent/30 group-hover:scale-110 transition-all">
                     <Icon className="w-4 h-4 text-accent" />
                   </div>
-                  <span className="text-[13px] font-medium text-foreground">{service}</span>
+                  <span className="text-[13px] font-semibold text-foreground">{service}</span>
                 </div>
               </ScrollReveal>
             );
