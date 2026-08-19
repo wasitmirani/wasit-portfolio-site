@@ -28,26 +28,40 @@ export function Contact() {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
-    const formData = Object.fromEntries(new FormData(form));
+    const formData = Object.fromEntries(new FormData(form)) as Record<string, string>;
 
     setStatus("sending");
     setError("");
 
-    const data = {
+    const data: Record<string, string> = {
       ...formData,
       _timestamp: String(loadedAt),
     };
 
     try {
-      const res = await fetch("/api/contact", {
+      const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
+      if (!accessKey) {
+        throw new Error("Contact form is not configured yet.");
+      }
+
+      const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: accessKey,
+          name: data.name,
+          email: data.email,
+          subject: `[Portfolio] ${data.subject}`,
+          message: data.message,
+          botcheck: data._honeypot || "",
+          from_name: "Portfolio Contact Form",
+          replyto: data.email,
+        }),
       });
 
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body.error ?? "Failed to send message. Please try again.");
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok || !body.success) {
+        throw new Error(body.message ?? "Failed to send message. Please try again.");
       }
 
       form.reset();
