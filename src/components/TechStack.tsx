@@ -1,70 +1,85 @@
 "use client";
 
 import { ScrollReveal } from "./ScrollReveal";
+import { SectionHeading } from "./SectionHeading";
 import { techStack } from "@/data/portfolio";
-import { Monitor, Server, Database, Smartphone, Cloud, ShoppingBag, Mail, Bot } from "lucide-react";
+import {
+  Monitor,
+  Server,
+  Database,
+  Smartphone,
+  Cloud,
+  ShoppingBag,
+  Mail,
+  Bot,
+} from "lucide-react";
 import { techIconMap } from "./TechIcons";
 import type { LucideIcon } from "lucide-react";
 
-const categoryIcons: Record<string, LucideIcon> = {
-  Frontend: Monitor,
-  Backend: Server,
-  Databases: Database,
-  Mobile: Smartphone,
-  "Cloud & DevOps": Cloud,
-  "E-commerce & Shopify": ShoppingBag,
-  "Marketing Automation & Email": Mail,
-  "AI & Developer Tools": Bot,
+const categoryMeta: Record<string, { icon: LucideIcon; tint: string }> = {
+  Frontend: { icon: Monitor, tint: "text-blue-600 dark:text-blue-400 bg-blue-500/10" },
+  Backend: { icon: Server, tint: "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10" },
+  Databases: { icon: Database, tint: "text-amber-600 dark:text-amber-400 bg-amber-500/10" },
+  Mobile: { icon: Smartphone, tint: "text-violet-600 dark:text-violet-400 bg-violet-500/10" },
+  "Cloud & DevOps": { icon: Cloud, tint: "text-sky-600 dark:text-sky-400 bg-sky-500/10" },
+  "E-commerce & Shopify": {
+    icon: ShoppingBag,
+    tint: "text-lime-600 dark:text-lime-400 bg-lime-500/10",
+  },
+  "Marketing Automation & Email": {
+    icon: Mail,
+    tint: "text-rose-600 dark:text-rose-400 bg-rose-500/10",
+  },
+  "AI & Developer Tools": {
+    icon: Bot,
+    tint: "text-fuchsia-600 dark:text-fuchsia-400 bg-fuchsia-500/10",
+  },
 };
 
 export function TechStack() {
   return (
-    <section id="skills" className="py-28 border-t border-border relative overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--accent)_0%,transparent_50%)] opacity-[0.03]" />
+    <section id="skills" className="section">
+      <div className="container-page">
+        <SectionHeading
+          eyebrow="Technologies"
+          title="Tech stack & tools"
+          description="The technologies I reach for day to day, grouped by where they sit in the stack."
+        />
 
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal>
-          <div className="text-center mb-16">
-            <span className="inline-block px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-accent bg-accent/10 rounded-full mb-4">
-              Technologies
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">
-              Tech Stack & Tools
-            </h2>
-            <p className="text-muted text-[15px] max-w-md mx-auto">
-              Technologies I use daily to build production-grade software.
-            </p>
-          </div>
-        </ScrollReveal>
-
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/*
+          A row-per-category spec sheet rather than a card grid — the categories hold
+          between 3 and 11 items, which leaves a card grid full of dead space.
+        */}
+        <div className="border-y border-border divide-y divide-border">
           {Object.entries(techStack).map(([category, techs], i) => {
-            const Icon = categoryIcons[category] ?? Server;
+            const meta = categoryMeta[category] ?? {
+              icon: Server,
+              tint: "text-accent bg-accent/10",
+            };
+            const Icon = meta.icon;
             return (
-              <ScrollReveal key={category} delay={i * 50}>
-                <div className="group relative p-5 rounded-2xl border border-border bg-card/50 backdrop-blur-sm hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 transition-all duration-300 h-full">
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <div className="relative">
-                    <div className="flex items-center gap-2.5 mb-4">
-                      <div className="w-9 h-9 rounded-xl bg-accent/10 flex items-center justify-center ring-1 ring-accent/20">
-                        <Icon className="w-4 h-4 text-accent" />
-                      </div>
-                      <h4 className="text-[13px] font-bold text-foreground uppercase tracking-wide">{category}</h4>
+              <ScrollReveal key={category} delay={i * 35}>
+                <div className="grid md:grid-cols-[230px_minmax(0,1fr)] gap-3 md:gap-8 py-5">
+                  <div className="flex items-center gap-2.5">
+                    <div className={`grid place-items-center w-7 h-7 rounded-lg ${meta.tint}`}>
+                      <Icon className="w-3.5 h-3.5" />
                     </div>
-                    <div className="flex flex-wrap gap-2">
-                      {techs.map((tech) => {
-                        const TechIcon = techIconMap[tech];
-                        return (
-                          <span
-                            key={tech}
-                            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-[12px] font-medium text-muted-foreground bg-background border border-border rounded-lg hover:border-accent/40 hover:text-accent hover:bg-accent/5 transition-all duration-200 cursor-default"
-                          >
-                            {TechIcon && <TechIcon className="w-3.5 h-3.5" />}
-                            {tech}
-                          </span>
-                        );
-                      })}
-                    </div>
+                    <h3 className="text-[12.5px] font-semibold text-foreground">{category}</h3>
+                    <span className="tabular text-[11px] text-faint md:ml-auto">
+                      {techs.length}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-wrap gap-1.5 md:pt-0.5">
+                    {techs.map((tech) => {
+                      const TechIcon = techIconMap[tech];
+                      return (
+                        <span key={tech} className="chip cursor-default">
+                          {TechIcon && <TechIcon className="w-3 h-3 opacity-70" />}
+                          {tech}
+                        </span>
+                      );
+                    })}
                   </div>
                 </div>
               </ScrollReveal>

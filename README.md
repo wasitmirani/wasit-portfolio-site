@@ -1,25 +1,15 @@
-# Wasit Mirani — Developer Portfolio
+# Wasit Ali — Developer Portfolio
 
-A premium, production-ready developer portfolio built with modern web technologies.
+A production-ready personal portfolio built with Next.js 16, React 19, TypeScript, and Tailwind CSS 4. Designed for Vercel deployment.
 
 ## Tech Stack
 
 - **Framework:** Next.js 16 (App Router)
 - **Language:** TypeScript
-- **Styling:** Tailwind CSS v4
-- **Fonts:** Geist Sans & Geist Mono
+- **Styling:** Tailwind CSS 4
+- **Email:** Resend (serverless contact form)
+- **Icons:** Lucide React
 - **Deployment:** Vercel
-
-## Features
-
-- Responsive design (mobile-first)
-- Dark/light theme toggle
-- Scroll-reveal animations (respects `prefers-reduced-motion`)
-- SEO optimized (Open Graph, Twitter cards, sitemap, robots.txt)
-- Accessible (ARIA labels, keyboard navigation, focus states)
-- Static rendering for optimal performance
-- Contact form via mailto
-- GitHub repository showcase
 
 ## Local Development
 
@@ -30,70 +20,68 @@ npm install
 # Start development server
 npm run dev
 
-# Build for production
+# Production build
 npm run build
 
 # Start production server
-npm start
+npm run start
 
 # Lint
 npm run lint
 ```
 
+Open [http://localhost:3000](http://localhost:3000) to view the site.
+
 ## Environment Variables
 
-No environment variables are required for the base portfolio. If you add GitHub API integration, create a `.env.local` file:
+Create a `.env.local` file based on `.env.example`:
 
+```env
+RESEND_API_KEY=re_your_api_key_here
+CONTACT_EMAIL=wasit7449@gmail.com
 ```
-GITHUB_TOKEN=your_token_here
-```
 
-## Deployment on Vercel
-
-1. Push this repository to GitHub
-2. Import the repository in [Vercel](https://vercel.com)
-3. Vercel auto-detects Next.js — no configuration needed
-4. Deploy
-
-Or use the Vercel CLI:
-
-```bash
-npx vercel
-```
+- **RESEND_API_KEY** — Get one at [resend.com](https://resend.com)
+- **CONTACT_EMAIL** — The email address that receives contact form submissions
 
 ## Project Structure
 
 ```
 src/
-├── app/
-│   ├── globals.css       # Global styles
-│   ├── layout.tsx        # Root layout with metadata
-│   ├── page.tsx          # Home page
-│   ├── not-found.tsx     # 404 page
-│   ├── sitemap.ts        # Dynamic sitemap
-│   └── robots.ts         # Robots configuration
-├── components/           # React components
-│   ├── Navbar.tsx
-│   ├── Hero.tsx
-│   ├── About.tsx
-│   ├── Experience.tsx
-│   ├── Projects.tsx
-│   ├── TechStack.tsx
-│   ├── WhatIBuild.tsx
-│   ├── EngineeringProcess.tsx
-│   ├── Services.tsx
-│   ├── GitHubSection.tsx
-│   ├── Contact.tsx
-│   ├── Footer.tsx
-│   ├── ThemeProvider.tsx
-│   ├── ScrollReveal.tsx
-│   └── Icons.tsx
-├── data/
-│   └── portfolio.ts      # All portfolio data
-└── lib/
-    └── utils.ts          # Utility functions
+  app/
+    layout.tsx          Root layout with metadata, fonts, theme
+    page.tsx            Single-page portfolio (all sections)
+    api/contact/        Resend-powered contact form endpoint
+    not-found.tsx       Custom 404 page
+    robots.ts           robots.txt generation
+    sitemap.ts          sitemap.xml generation
+  components/           Reusable UI components
+  data/portfolio.ts     All portfolio content (experience, projects, skills)
+  lib/                  Utility functions
 ```
+
+## Vercel Deployment
+
+1. Push this repository to GitHub
+2. Import the repository in [vercel.com/new](https://vercel.com/new)
+3. Add environment variables (`RESEND_API_KEY`, `CONTACT_EMAIL`) in the Vercel project settings
+4. Deploy — Vercel auto-detects Next.js and handles the build
+
+No additional configuration is required. The project uses the default Next.js build output.
+
+## Features
+
+- Dark/light theme with system preference detection
+- Responsive design (mobile-first)
+- Scroll-reveal animations (respects `prefers-reduced-motion`)
+- SEO metadata, Open Graph, Twitter cards
+- Sitemap and robots.txt
+- Accessible navigation with keyboard support
+- Contact form with server-side email delivery
+- Project filtering
+- Professional experience timeline
+- GitHub repository showcase
 
 ## License
 
-All rights reserved. © 2026 Wasit Mirani.
+Private — All rights reserved.

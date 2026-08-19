@@ -1,89 +1,138 @@
 "use client";
 
 import { ScrollReveal } from "./ScrollReveal";
+import { SectionHeading } from "./SectionHeading";
 import { experiences, education } from "@/data/portfolio";
-import { GraduationCap, Briefcase } from "lucide-react";
+import { GraduationCap } from "lucide-react";
 
 export function Experience() {
   return (
-    <section id="experience" className="py-28 border-t border-border">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal>
-          <div className="text-center mb-16">
-            <span className="inline-block px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-accent bg-accent/10 rounded-full mb-4">
-              Career
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">Work Experience</h2>
-            <p className="text-muted text-[15px] max-w-md mx-auto">
-              7+ years of building scalable software across multiple industries.
-            </p>
-          </div>
-        </ScrollReveal>
+    <section id="experience" className="section">
+      <div className="container-page">
+        <SectionHeading
+          eyebrow="Career"
+          title="Work experience"
+          description="7+ years across insurance, logistics, e-commerce and CRM — shipping software that teams depend on daily."
+        />
 
         <div className="relative">
-          {/* Timeline line */}
-          <div className="hidden md:block absolute left-[100px] top-0 bottom-0 w-px bg-border" />
+          {/* Timeline rail, faded at both ends so it reads as continuous rather than clipped. */}
+          <div
+            className="hidden md:block absolute left-[5px] top-2 bottom-2 w-px bg-gradient-to-b from-transparent via-border to-transparent"
+            aria-hidden="true"
+          />
 
-          <div className="space-y-0">
-            {experiences.map((exp, i) => (
-              <ScrollReveal key={i} delay={i * 60}>
-                <div className="group relative grid md:grid-cols-[180px_1fr] gap-3 md:gap-10 py-8 border-b border-border last:border-b-0">
-                  <div className="text-sm text-muted shrink-0 md:pt-1">
-                    <div className="font-mono text-[13px] font-medium">{exp.period}</div>
-                    {/* Timeline dot */}
-                    <div className="hidden md:block absolute left-[96px] top-10 w-[9px] h-[9px] rounded-full bg-accent ring-4 ring-background" />
-                  </div>
-                  <div className="relative p-5 rounded-2xl border border-transparent group-hover:border-border group-hover:bg-card/50 transition-all">
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 mb-1.5">
-                      <h4 className="text-[16px] font-bold text-foreground">{exp.title}</h4>
-                      <span className="hidden sm:inline text-muted-foreground">at</span>
-                      <span className="text-sm text-accent font-semibold">{exp.company}</span>
+          <ol className="space-y-0">
+            {experiences.map((exp, i) => {
+              const isCurrent = i === 0;
+              return (
+                <li key={`${exp.company}-${i}`}>
+                  <ScrollReveal delay={i * 50}>
+                    <div className="group relative md:pl-9 py-8 border-b border-border">
+                      <span
+                        className={`hidden md:block absolute left-0 top-[2.35rem] w-[11px] h-[11px] rounded-full border-2 border-background transition-colors ${
+                          isCurrent
+                            ? "bg-accent ring-4 ring-accent/15"
+                            : "bg-border-strong group-hover:bg-muted"
+                        }`}
+                        aria-hidden="true"
+                      />
+
+                      <div className="grid md:grid-cols-[150px_minmax(0,1fr)] gap-3 md:gap-8">
+                        <div className="md:pt-0.5">
+                          <div className="tabular font-mono text-[11.5px] text-faint">
+                            {exp.period}
+                          </div>
+                          {isCurrent && (
+                            <span className="inline-flex items-center gap-1.5 mt-2 px-2 py-0.5 rounded-full bg-emerald-500/10 text-[10px] font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                              Current
+                            </span>
+                          )}
+                        </div>
+
+                        <div>
+                          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                            <h3 className="text-[15.5px] font-semibold text-foreground">
+                              {exp.title}
+                            </h3>
+                            <span className="text-faint">·</span>
+                            <span className="text-[14px] font-medium text-accent">
+                              {exp.company}
+                            </span>
+                          </div>
+                          <p className="mt-1 text-[12px] text-faint">{exp.location}</p>
+
+                          <ul className="mt-4 space-y-2">
+                            {exp.highlights.slice(0, 4).map((h, j) => (
+                              <li
+                                key={j}
+                                className="flex gap-2.5 text-[13px] leading-relaxed text-muted"
+                              >
+                                <span
+                                  className="mt-[7px] w-1 h-1 shrink-0 rounded-full bg-accent/60"
+                                  aria-hidden="true"
+                                />
+                                <span>{h}</span>
+                              </li>
+                            ))}
+                          </ul>
+
+                          <div className="mt-4 flex flex-wrap gap-1.5">
+                            {exp.technologies.slice(0, 8).map((tech) => (
+                              <span key={tech} className="chip">
+                                {tech}
+                              </span>
+                            ))}
+                            {exp.technologies.length > 8 && (
+                              <span className="chip !bg-transparent !text-faint">
+                                +{exp.technologies.length - 8} more
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <p className="text-xs text-muted-foreground mb-4">{exp.location}</p>
+                  </ScrollReveal>
+                </li>
+              );
+            })}
 
-                    <ul className="space-y-2 mb-5">
-                      {exp.highlights.slice(0, 4).map((h, j) => (
-                        <li key={j} className="flex items-start gap-2.5 text-[13px] text-muted leading-relaxed">
-                          <span className="w-1.5 h-1.5 rounded-full bg-accent/60 mt-1.5 shrink-0" />
-                          {h}
-                        </li>
-                      ))}
-                    </ul>
-
-                    <div className="flex flex-wrap gap-1.5">
-                      {exp.technologies.slice(0, 8).map((tech) => (
-                        <span key={tech} className="px-2.5 py-1 text-[11px] font-semibold text-muted-foreground bg-card-hover/80 border border-border/50 rounded-lg">
-                          {tech}
-                        </span>
-                      ))}
-                      {exp.technologies.length > 8 && (
-                        <span className="px-2.5 py-1 text-[11px] text-muted-foreground">+{exp.technologies.length - 8}</span>
-                      )}
+            <li>
+              <ScrollReveal delay={experiences.length * 50}>
+                <div className="group relative md:pl-9 py-8">
+                  <span
+                    className="hidden md:block absolute left-0 top-[2.35rem] w-[11px] h-[11px] rounded-full border-2 border-background bg-border-strong"
+                    aria-hidden="true"
+                  />
+                  <div className="grid md:grid-cols-[150px_minmax(0,1fr)] gap-3 md:gap-8">
+                    <div className="tabular font-mono text-[11.5px] text-faint md:pt-0.5">
+                      {education.period}
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="grid place-items-center w-9 h-9 shrink-0 rounded-[10px] bg-violet-500/10 text-violet-600 dark:text-violet-400">
+                        <GraduationCap className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h3 className="text-[14.5px] font-semibold text-foreground">
+                          {education.degree}
+                        </h3>
+                        <a
+                          href={education.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[13px] font-medium text-accent hover:underline underline-offset-2"
+                        >
+                          {education.university}
+                        </a>
+                        <p className="text-[12px] text-faint">{education.city}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
               </ScrollReveal>
-            ))}
-
-            <ScrollReveal delay={experiences.length * 60}>
-              <div className="grid md:grid-cols-[180px_1fr] gap-3 md:gap-10 py-8">
-                <div className="text-sm shrink-0 md:pt-1">
-                  <div className="font-mono text-[13px] text-muted font-medium">{education.period}</div>
-                  <div className="hidden md:block absolute left-[96px] w-[9px] h-[9px] rounded-full bg-violet-500 ring-4 ring-background" />
-                </div>
-                <div className="flex items-start gap-3 p-5 rounded-2xl border border-border/50 bg-card/30">
-                  <div className="w-10 h-10 rounded-xl bg-violet-500/10 flex items-center justify-center shrink-0">
-                    <GraduationCap className="w-5 h-5 text-violet-500" />
-                  </div>
-                  <div>
-                    <h4 className="text-[15px] font-bold text-foreground">{education.degree}</h4>
-                    <p className="text-sm text-accent font-semibold">{education.university}</p>
-                    <p className="text-xs text-muted-foreground">{education.city}</p>
-                  </div>
-                </div>
-              </div>
-            </ScrollReveal>
-          </div>
+            </li>
+          </ol>
         </div>
       </div>
     </section>

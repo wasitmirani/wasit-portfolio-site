@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useTheme } from "./ThemeProvider";
-import { Sun, Moon, Menu, X } from "lucide-react";
+import { Sun, Moon, Menu, X, ArrowUpRight } from "lucide-react";
 import { GithubIcon as Github, LinkedinIcon as Linkedin } from "./BrandIcons";
 import { siteConfig, navLinks } from "@/data/portfolio";
 
@@ -14,79 +14,183 @@ export function Navbar() {
 
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > 20);
+      setScrolled(window.scrollY > 16);
       const sections = navLinks.map((l) => l.href.slice(1));
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i]);
-        if (el && el.getBoundingClientRect().top <= 120) {
+        if (el && el.getBoundingClientRect().top <= 140) {
           setActiveSection(`#${sections[i]}`);
           break;
         }
       }
     };
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [mobileOpen]);
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-background/70 backdrop-blur-2xl border-b border-border/50 shadow-sm" : ""}`}>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <a href="#home" className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-accent to-violet-600 text-white flex items-center justify-center text-sm font-bold group-hover:scale-110 transition-transform shadow-lg shadow-accent/25">W</div>
-            <span className="font-bold text-foreground hidden sm:block tracking-tight">{siteConfig.name}</span>
-          </a>
+    <>
+      <header
+        className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? "bg-background/72 backdrop-blur-xl backdrop-saturate-150 border-b border-border"
+            : "border-b border-transparent"
+        }`}
+      >
+        <div className="container-page">
+          <div className="flex items-center justify-between h-16">
+            <a href="#home" className="group flex items-center gap-2.5">
+              <div className="relative w-8 h-8 rounded-[9px] bg-foreground text-background grid place-items-center text-[13px] font-bold transition-transform duration-200 group-hover:scale-105">
+                W
+              </div>
+              <div className="hidden sm:block leading-tight">
+                <div className="text-[13.5px] font-semibold text-foreground">
+                  {siteConfig.name}
+                </div>
+                <div className="text-[10.5px] text-faint">Software Engineer</div>
+              </div>
+            </a>
 
-          <div className="hidden md:flex items-center gap-1 bg-card/50 backdrop-blur-sm border border-border/50 rounded-full px-2 py-1">
-            {navLinks.map((link) => (
+            <nav
+              aria-label="Sections"
+              className="hidden md:flex items-center gap-0.5 p-1 rounded-full border border-border bg-card/60 backdrop-blur-sm"
+            >
+              {navLinks.map((link) => {
+                const isActive = activeSection === link.href;
+                return (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    aria-current={isActive ? "true" : undefined}
+                    className={`relative px-3 py-1.5 text-[12.5px] font-medium rounded-full transition-colors duration-200 ${
+                      isActive
+                        ? "text-foreground"
+                        : "text-muted hover:text-foreground"
+                    }`}
+                  >
+                    {isActive && (
+                      <span className="absolute inset-0 rounded-full bg-surface" />
+                    )}
+                    <span className="relative">{link.label}</span>
+                  </a>
+                );
+              })}
+            </nav>
+
+            <div className="flex items-center gap-1">
               <a
-                key={link.href}
-                href={link.href}
-                className={`px-3 py-1.5 text-[13px] rounded-full transition-all ${
-                  activeSection === link.href ? "text-accent font-semibold bg-accent/10" : "text-muted hover:text-foreground"
-                }`}
+                href={siteConfig.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub profile"
+                className="hidden sm:grid place-items-center w-8 h-8 text-muted hover:text-foreground hover:bg-surface rounded-lg transition-colors"
               >
-                {link.label}
+                <Github className="w-[15px] h-[15px]" />
               </a>
-            ))}
-          </div>
+              <a
+                href={siteConfig.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn profile"
+                className="hidden sm:grid place-items-center w-8 h-8 text-muted hover:text-foreground hover:bg-surface rounded-lg transition-colors"
+              >
+                <Linkedin className="w-[15px] h-[15px]" />
+              </a>
 
-          <div className="flex items-center gap-1">
-            <a href={siteConfig.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="p-2 text-muted hover:text-foreground transition-colors rounded-lg hover:bg-card">
-              <Github className="w-[18px] h-[18px]" />
-            </a>
-            <a href={siteConfig.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="p-2 text-muted hover:text-foreground transition-colors rounded-lg hover:bg-card">
-              <Linkedin className="w-[18px] h-[18px]" />
-            </a>
-            <button onClick={toggle} aria-label="Toggle theme" className="p-2 text-muted hover:text-foreground transition-colors rounded-lg hover:bg-card">
-              {theme === "dark" ? <Sun className="w-[18px] h-[18px]" /> : <Moon className="w-[18px] h-[18px]" />}
-            </button>
-            <a href="#contact" className="hidden lg:inline-flex items-center px-4 py-2 ml-2 text-[13px] font-semibold bg-accent text-white rounded-xl hover:bg-accent/90 transition-all shadow-md shadow-accent/25 hover:shadow-lg hover:shadow-accent/30">
-              Hire Me
-            </a>
-            <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden p-2 text-muted hover:text-foreground" aria-label="Toggle menu">
-              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
+              <div className="hidden sm:block w-px h-5 bg-border mx-1" />
+
+              <button
+                onClick={toggle}
+                aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+                className="grid place-items-center w-8 h-8 text-muted hover:text-foreground hover:bg-surface rounded-lg transition-colors"
+              >
+                {theme === "dark" ? (
+                  <Sun className="w-[15px] h-[15px]" />
+                ) : (
+                  <Moon className="w-[15px] h-[15px]" />
+                )}
+              </button>
+
+              <a
+                href="#contact"
+                className="btn btn-primary group hidden lg:inline-flex ml-2"
+              >
+                Let&apos;s Talk
+                <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </a>
+
+              <button
+                onClick={() => setMobileOpen(!mobileOpen)}
+                className="md:hidden grid place-items-center w-9 h-9 text-muted hover:text-foreground rounded-lg transition-colors"
+                aria-label="Toggle navigation menu"
+                aria-expanded={mobileOpen}
+              >
+                {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </header>
 
-      <div className={`md:hidden fixed inset-0 top-16 bg-background/95 backdrop-blur-xl z-40 transition-all duration-300 ${mobileOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"}`}>
-        <div className="flex flex-col p-6 gap-1">
+      <div
+        className={`md:hidden fixed inset-x-0 top-16 bottom-0 z-40 bg-background transition-all duration-200 ${
+          mobileOpen
+            ? "opacity-100 visible"
+            : "opacity-0 invisible pointer-events-none"
+        }`}
+      >
+        <div className="container-page flex flex-col py-6 gap-1">
           {navLinks.map((link) => (
-            <a key={link.href} href={link.href} onClick={() => setMobileOpen(false)}
-              className={`px-4 py-3.5 text-[15px] rounded-xl transition-colors ${activeSection === link.href ? "text-accent font-semibold bg-accent/10" : "text-foreground hover:bg-card"}`}>
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={() => setMobileOpen(false)}
+              className={`px-4 py-3 text-[15px] rounded-xl transition-colors ${
+                activeSection === link.href
+                  ? "text-foreground font-medium bg-surface"
+                  : "text-muted hover:text-foreground hover:bg-surface"
+              }`}
+            >
               {link.label}
             </a>
           ))}
-          <a href="#contact" onClick={() => setMobileOpen(false)} className="mt-4 px-4 py-3.5 text-center bg-accent text-white rounded-xl font-semibold shadow-lg shadow-accent/25">Hire Me</a>
+
+            <a
+            href="#contact"
+            onClick={() => setMobileOpen(false)}
+            className="btn btn-primary btn-lg mt-5"
+          >
+            Get in touch
+          </a>
+
+          <div className="flex items-center gap-2 mt-6 pt-6 border-t border-border">
+            <a
+              href={siteConfig.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-secondary flex-1"
+            >
+              <Github className="w-4 h-4" /> GitHub
+            </a>
+            <a
+              href={siteConfig.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-secondary flex-1"
+            >
+              <Linkedin className="w-4 h-4" /> LinkedIn
+            </a>
+          </div>
         </div>
       </div>
-    </nav>
+    </>
   );
 }

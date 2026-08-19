@@ -1,6 +1,7 @@
 "use client";
 
 import { ScrollReveal } from "./ScrollReveal";
+import { SectionHeading } from "./SectionHeading";
 import { whatIBuild } from "@/data/portfolio";
 import { Cpu, ShoppingCart, ShoppingBag, Code2, Building2, Palette, Mail } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -15,38 +16,42 @@ const iconComponents: Record<string, LucideIcon> = {
   automation: Mail,
 };
 
+const iconTints: Record<string, string> = {
+  saas: "text-blue-600 dark:text-blue-400 bg-blue-500/10",
+  ecommerce: "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10",
+  shopify: "text-lime-600 dark:text-lime-400 bg-lime-500/10",
+  api: "text-violet-600 dark:text-violet-400 bg-violet-500/10",
+  business: "text-amber-600 dark:text-amber-400 bg-amber-500/10",
+  frontend: "text-sky-600 dark:text-sky-400 bg-sky-500/10",
+  automation: "text-rose-600 dark:text-rose-400 bg-rose-500/10",
+};
+
 export function WhatIBuild() {
   return (
-    <section className="py-28 bg-card/50 border-t border-border relative overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,var(--accent)_0%,transparent_50%)] opacity-[0.02]" />
+    <section className="section">
+      <div className="container-page">
+        <SectionHeading
+          eyebrow="Expertise"
+          title="What I build"
+          description="Systems that carry real business load — not demos. Each area below represents work shipped to production."
+        />
 
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ScrollReveal>
-          <div className="text-center mb-16">
-            <span className="inline-block px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-accent bg-accent/10 rounded-full mb-4">
-              Expertise
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">What I Build</h2>
-            <p className="text-muted text-[15px] max-w-md mx-auto">
-              Specialized in building complex systems that solve real business problems.
-            </p>
-          </div>
-        </ScrollReveal>
-
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5">
           {whatIBuild.map((item, i) => {
-            const Icon = iconComponents[item.icon] || Cpu;
+            const Icon = iconComponents[item.icon] ?? Cpu;
+            const tint = iconTints[item.icon] ?? "text-accent bg-accent/10";
             return (
-              <ScrollReveal key={item.title} delay={i * 50}>
-                <div className="group relative p-6 rounded-2xl bg-background border border-border hover:border-accent/40 hover:shadow-xl hover:shadow-accent/5 transition-all duration-300 h-full overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="relative">
-                    <div className="w-11 h-11 rounded-xl bg-accent/10 flex items-center justify-center mb-4 ring-1 ring-accent/20 group-hover:ring-accent/40 group-hover:scale-110 transition-all duration-300">
-                      <Icon className="w-5 h-5 text-accent" />
-                    </div>
-                    <h4 className="text-sm font-bold text-foreground mb-2">{item.title}</h4>
-                    <p className="text-[13px] text-muted leading-relaxed">{item.description}</p>
+              <ScrollReveal key={item.title} delay={i * 40}>
+                <div className="card card-interactive h-full p-5">
+                  <div className={`grid place-items-center w-9 h-9 rounded-[10px] ${tint}`}>
+                    <Icon className="w-4 h-4" />
                   </div>
+                  <h3 className="mt-3.5 text-[13.5px] font-semibold text-foreground">
+                    {item.title}
+                  </h3>
+                  <p className="mt-1.5 text-[12.5px] leading-relaxed text-muted">
+                    {item.description}
+                  </p>
                 </div>
               </ScrollReveal>
             );

@@ -2,17 +2,25 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white dark:bg-zinc-950">
-      <div className="text-center px-4">
-        <h1 className="text-6xl font-bold text-zinc-900 dark:text-white mb-4">404</h1>
-        <p className="text-lg text-zinc-600 dark:text-zinc-400 mb-8">
-          This page could not be found.
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden">
+      <div className="dot-grid absolute inset-0 -z-10" aria-hidden="true" />
+      <div
+        className="glow absolute -top-32 left-1/2 -z-10 h-[420px] w-[520px] -translate-x-1/2 opacity-60"
+        aria-hidden="true"
+      />
+
+      <div className="container-page text-center">
+        <p className="eyebrow justify-center">Error 404</p>
+        <h1 className="mt-5 text-[2.5rem] sm:text-[3.25rem] font-semibold leading-[1.1] text-foreground">
+          This page could
+          <br />
+          <span className="text-muted">not be found</span>
+        </h1>
+        <p className="mx-auto mt-4 max-w-sm text-[14.5px] leading-relaxed text-muted">
+          The link may be broken or the page may have moved.
         </p>
-        <Link
-          href="/"
-          className="inline-flex items-center px-6 py-3 text-sm font-medium text-white bg-zinc-900 dark:bg-white dark:text-zinc-900 rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-colors"
-        >
-          Go Home
+        <Link href="/" className="btn btn-primary mt-8">
+          Back to home
         </Link>
       </div>
     </div>
